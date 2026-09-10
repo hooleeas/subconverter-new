@@ -504,6 +504,8 @@ static rapidjson::Value transformRuleToSingBox(std::vector<std::string_view> &ar
     type = replaceAllDistinct(type, "-", "_");
     type = replaceAllDistinct(type, "ip_cidr6", "ip_cidr");
     type = replaceAllDistinct(type, "src_", "source_");
+    if (type == "geoip" || type == "geosite")
+        return rapidjson::Value(rapidjson::kObjectType);
     if (type == "match" || type == "final")
     {
         rule_obj.AddMember("outbound", rapidjson::Value(value.data(), value.size(), allocator), allocator);
@@ -513,6 +515,7 @@ static rapidjson::Value transformRuleToSingBox(std::vector<std::string_view> &ar
         rule_obj.AddMember(rapidjson::Value(type.c_str(), allocator), rapidjson::Value(value.data(), value.size(), allocator), allocator);
         rule_obj.AddMember("outbound", rapidjson::Value(group.c_str(), allocator), allocator);
     }
+    rule_obj.AddMember("action", "route", allocator);
     return rule_obj;
 }
 
@@ -533,6 +536,8 @@ static void appendSingBoxRule(std::vector<std::string_view> &args, rapidjson::Va
     auto value = toLower(std::string(args[1]));
     realType = replaceAllDistinct(realType, "-", "_");
     realType = replaceAllDistinct(realType, "ip_cidr6", "ip_cidr");
+    if (realType == "geoip" || realType == "geosite")
+        return;
 
     rules | AppendToArray(realType.c_str(), rapidjson::Value(value.c_str(), value.size(), allocator), allocator);
 }
@@ -583,7 +588,9 @@ void rulesetToSingBox(rapidjson::Document &base_rule, std::vector<RulesetContent
                 final = rule_group;
                 continue;
             }
-            rules.PushBack(transformRuleToSingBox(temp, strLine, rule_group, allocator), allocator);
+            auto transformed = transformRuleToSingBox(temp, strLine, rule_group, allocator);
+            if (!transformed.ObjectEmpty())
+                rules.PushBack(transformed, allocator);
             total_rules++;
             continue;
         }
@@ -613,6 +620,7 @@ void rulesetToSingBox(rapidjson::Document &base_rule, std::vector<RulesetContent
         }
         if (rule.ObjectEmpty()) continue;
         rule.AddMember("outbound", rapidjson::Value(rule_group.c_str(), allocator), allocator);
+        rule.AddMember("action", "route", allocator);
         rules.PushBack(rule, allocator);
     }
 

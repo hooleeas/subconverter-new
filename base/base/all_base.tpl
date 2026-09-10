@@ -277,70 +277,36 @@ enhanced-mode-by-rule = true
     "dns": {
         "servers": [
             {
+                "type": "tls",
                 "tag": "dns_proxy",
-                "address": "tls://1.1.1.1",
-                "address_resolver": "dns_resolver"
+                "server": "1.1.1.1"
             },
             {
+                "type": "h3",
                 "tag": "dns_direct",
-                "address": "h3://dns.alidns.com/dns-query",
-                "address_resolver": "dns_resolver",
-                "detour": "DIRECT"
+                "server": "dns.alidns.com",
+                "path": "/dns-query",
+                "domain_resolver": {
+                    "server": "dns_resolver"
+                }
             },
             {
+                "type": "fakeip",
                 "tag": "dns_fakeip",
-                "address": "fakeip"
+                "inet4_range": "198.18.0.0/15"
+                {% if default(request.singbox.ipv6, "") == "1" %},
+                "inet6_range": "fc00::/18"
+                {% endif %}
             },
             {
+                "type": "udp",
                 "tag": "dns_resolver",
-                "address": "223.5.5.5",
-                "detour": "DIRECT"
-            },
-            {
-                "tag": "block",
-                "address": "rcode://success"
+                "server": "223.5.5.5"
             }
         ],
-        "rules": [
-            {
-                "outbound": [
-                    "any"
-                ],
-                "server": "dns_resolver"
-            },
-            {
-                "geosite": [
-                    "category-ads-all"
-                ],
-                "server": "dns_block",
-                "disable_cache": true
-            },
-            {
-                "geosite": [
-                    "geolocation-!cn"
-                ],
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
-                "server": "dns_fakeip"
-            },
-            {
-                "geosite": [
-                    "geolocation-!cn"
-                ],
-                "server": "dns_proxy"
-            }
-        ],
+        "rules": [],
         "final": "dns_direct",
-        "independent_cache": true,
-        "fakeip": {
-            "enabled": true,
-            {% if default(request.singbox.ipv6, "") == "1" %}
-            "inet6_range": "fc00::\/18",
-            {% endif %}
-            "inet4_range": "198.18.0.0\/15"
-        }
+        "reverse_mapping": true
     },
     "ntp": {
         "enabled": true,

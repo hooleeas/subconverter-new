@@ -2699,9 +2699,8 @@ proxyToSingBox(std::vector<Proxy> &nodes, rapidjson::Document &json,
     if (!ext.nodelist) {
         auto direct = buildObject(allocator, "type", "direct", "tag", "DIRECT");
         outbounds.PushBack(direct, allocator);
-        // 注释掉 REJECT 和 dns-out
-        // auto reject = buildObject(allocator, "type", "block", "tag", "REJECT");
-        // outbounds.PushBack(reject, allocator);
+        auto reject = buildObject(allocator, "type", "block", "tag", "REJECT");
+        outbounds.PushBack(reject, allocator);
         // auto dns = buildObject(allocator, "type", "dns", "tag", "dns-out");
         // outbounds.PushBack(dns, allocator);
     }
