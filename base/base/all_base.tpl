@@ -342,6 +342,7 @@ enhanced-mode-by-rule = true
     "outbounds": [],
     "route": {
         "rules": [],
+        "default_domain_resolver": "dns_resolver",
         "auto_detect_interface": true
     },
     "experimental": {
