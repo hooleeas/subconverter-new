@@ -4,6 +4,7 @@
 #include "utils/logger.h"
 #include "utils/rapidjson_extra.h"
 #include "utils/system.h"
+#include "version.h"
 #include "webget.h"
 
 std::string buildGistData(std::string name, std::string content)
