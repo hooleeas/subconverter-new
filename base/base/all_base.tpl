@@ -329,10 +329,11 @@ enhanced-mode-by-rule = true
         {
             "type": "tun",
             "tag": "tun-in",
-            "inet4_address": "172.19.0.1/30",
-            {% if default(request.singbox.ipv6, "") == "1" %}
-            "inet6_address": "fdfe:dcba:9876::1/126",
+            "address": [
+                "172.19.0.1/30"{% if default(request.singbox.ipv6, "") == "1" %},
+                "fdfe:dcba:9876::1/126"
             {% endif %}
+            ],
             "auto_route": true,
             "strict_route": true,
             "stack": "mixed",
