@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 阅读文档
-    url: https://github.com/tindy2013/subconverter/blob/master/README-cn.md
-    about: 建议您发布issue前先仔细阅读项目文档
+  - name: Documentation
+    url: https://github.com/hooleeas/subconverter-new/blob/master/README.md
+    about: Please read the project documentation before opening an issue.

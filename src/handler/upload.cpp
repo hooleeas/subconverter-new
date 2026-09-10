@@ -12,7 +12,7 @@ std::string buildGistData(std::string name, std::string content)
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
     writer.StartObject();
     writer.Key("description");
-    writer.String("subconverter");
+    writer.String(PRODUCT_NAME);
     writer.Key("public");
     writer.Bool(false);
     writer.Key("files");

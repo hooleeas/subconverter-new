@@ -152,7 +152,7 @@ int WebServer::start_web_server_multi(listener_args *args)
             res.set_content("Loop request detected!", "text/plain");
             return httplib::Server::HandlerResponse::Handled;
         }
-        res.set_header("Server", "subconverter/" VERSION " cURL/" LIBCURL_VERSION);
+        res.set_header("Server", PRODUCT_NAME "/" VERSION " cURL/" LIBCURL_VERSION);
         if (require_auth)
         {
             static std::string auth_token = "Basic " + base64Encode(auth_user + ":" + auth_password);

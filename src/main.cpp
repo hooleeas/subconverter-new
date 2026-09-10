@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     }
     chkArg(argc, argv);
     setcd(global.prefPath); //then switch to pref directory
-    writeLog(0, "SubConverter " VERSION " starting up..", LOG_LEVEL_INFO);
+    writeLog(0, PRODUCT_NAME " " VERSION " starting up..", LOG_LEVEL_INFO);
 #ifdef _WIN32
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(1, 1), &wsaData) != 0)
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
     signal(SIGTERM, signal_handler);
     signal(SIGINT, signal_handler);
 
-    SetConsoleTitle("SubConverter " VERSION);
+    SetConsoleTitle(PRODUCT_NAME " " VERSION);
     readConf();
     //vfs::vfs_read("vfs.ini");
     if(!global.updateRulesetOnRequest)
@@ -180,13 +180,13 @@ int main(int argc, char *argv[])
     /*
     webServer.append_response("GET", "/", "text/plain", [](RESPONSE_CALLBACK_ARGS) -> std::string
     {
-        return "subconverter " VERSION " backend\n";
+        return PRODUCT_NAME " " VERSION " backend\n";
     });
     */
 
     webServer.append_response("GET", "/version", "text/plain", [](RESPONSE_CALLBACK_ARGS) -> std::string
     {
-        return "subconverter " VERSION " backend\n";
+        return PRODUCT_NAME " " VERSION " backend\n";
     });
 
     webServer.append_response("GET", "/refreshrules", "text/plain", [](RESPONSE_CALLBACK_ARGS) -> std::string
