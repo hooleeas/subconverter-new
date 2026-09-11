@@ -277,18 +277,27 @@ enhanced-mode-by-rule = true
     "dns": {
         "servers": [
             {
-                "type": "tls",
-                "tag": "dns_proxy",
-                "server": "1.1.1.1"
+                "type": "https",
+                "tag": "dns_cn",
+                "server": "223.5.5.5",
+                "server_port": 443,
+                "path": "/dns-query",
+                "tls": {
+                    "enabled": true,
+                    "server_name": "dns.alidns.com"
+                }
             },
             {
-                "type": "h3",
-                "tag": "dns_direct",
-                "server": "dns.alidns.com",
+                "type": "https",
+                "tag": "dns_global",
+                "server": "1.1.1.1",
+                "server_port": 443,
                 "path": "/dns-query",
-                "domain_resolver": {
-                    "server": "dns_resolver"
-                }
+                "tls": {
+                    "enabled": true,
+                    "server_name": "cloudflare-dns.com"
+                },
+                "detour": "🚀 节点选择"
             },
             {
                 "type": "fakeip",
@@ -305,7 +314,8 @@ enhanced-mode-by-rule = true
             }
         ],
         "rules": [],
-        "final": "dns_direct",
+        "final": "dns_global",
+        "strategy": "prefer_ipv4",
         "reverse_mapping": true
     },
     "ntp": {
@@ -336,12 +346,21 @@ enhanced-mode-by-rule = true
             ],
             "auto_route": true,
             "strict_route": true,
+            "dns_mode": "hijack",
             "stack": "mixed"
         }
     ],
     "outbounds": [],
     "route": {
-        "rules": [],
+        "rules": [
+            {
+                "action": "sniff"
+            },
+            {
+                "protocol": "dns",
+                "action": "hijack-dns"
+            }
+        ],
         "default_domain_resolver": "dns_resolver",
         "auto_detect_interface": true
     },
@@ -351,10 +370,9 @@ enhanced-mode-by-rule = true
             "store_fakeip": true
         },
         "clash_api": {
-            "external_controller": "{{ default(global.clash.external_controller, "127.0.0.1:9090") }}",
+            "external_controller": "127.0.0.1:9090",
             "external_ui": "dashboard"
         }
     }
 }
-
 {% endif %}
