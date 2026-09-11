@@ -352,15 +352,7 @@ enhanced-mode-by-rule = true
     ],
     "outbounds": [],
     "route": {
-        "rules": [
-            {
-                "action": "sniff"
-            },
-            {
-                "protocol": "dns",
-                "action": "hijack-dns"
-            }
-        ],
+        "rules": [],
         "default_domain_resolver": "dns_resolver",
         "auto_detect_interface": true
     },

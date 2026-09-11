@@ -557,6 +557,17 @@ void rulesetToSingBox(rapidjson::Document &base_rule, std::vector<RulesetContent
             rules.Swap(base_rule["route"]["rules"]);
     }
 
+    // These rules are required for current sing-box TUN routing and must be
+    // retained even when an external config replaces the template rules.
+    rapidjson::Value sniff_rule(rapidjson::kObjectType);
+    sniff_rule.AddMember("action", "sniff", allocator);
+    rules.PushBack(sniff_rule, allocator);
+
+    rapidjson::Value hijack_dns_rule(rapidjson::kObjectType);
+    hijack_dns_rule.AddMember("protocol", "dns", allocator);
+    hijack_dns_rule.AddMember("action", "hijack-dns", allocator);
+    rules.PushBack(hijack_dns_rule, allocator);
+
     if (global.singBoxAddClashModes)
     {
         auto global_object = buildObject(allocator, "clash_mode", "Global", "outbound", "GLOBAL");
