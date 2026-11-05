@@ -1,8 +1,8 @@
-# SUB-CVT 中文文档
+# subconverter-new 中文文档
 
 [English](./README.md)
 
-SUB-CVT 是一个订阅转换工具，基于 [subconverter](https://github.com/tindy2013/subconverter)，并更新了与当前 Sing-box 版本兼容的输出格式。
+subconverter-new 是一个订阅转换工具，基于 [subconverter](https://github.com/tindy2013/subconverter)，并更新了与当前 Sing-box 版本兼容的输出格式。
 
 ## Docker 部署
 

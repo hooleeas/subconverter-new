@@ -36,7 +36,7 @@ RUN set -xe && \
     cmake -DCMAKE_CXX_STANDARD=11 . && \
     make install -j $THREADS && \
     cd .. && \
-    git clone https://github.com/hooleeas/SUB-CVT --depth=1 sub-cvt && \
+    git clone https://github.com/hooleeas/subconverter-new --depth=1 sub-cvt && \
     cd sub-cvt && \
     python3 -m ensurepip && \
     python3 -m pip install gitpython && \
