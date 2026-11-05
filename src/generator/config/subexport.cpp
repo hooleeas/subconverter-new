@@ -2838,10 +2838,15 @@ proxyToSingBox(std::vector<Proxy> &nodes, rapidjson::Document &json,
                 break;
             }
             case ProxyType::VLESS: {
+                // Upstream sing-box has no VLESS "encryption" field: a node
+                // that requires encryption (e.g. mlkem) cannot be used by it
+                // at all. Dropping only the field would emit an outbound
+                // that fails to connect, so skip the whole node instead of
+                // producing a config sing-box rejects outright.
+                if (!x.Encryption.empty() && x.Encryption != "none")
+                    continue;
                 addSingBoxCommonMembers(proxy, x, "vless", allocator);
                 proxy.AddMember("uuid", rapidjson::StringRef(x.UserId.c_str()), allocator);
-                if (!x.Encryption.empty() && x.Encryption != "none")
-                    proxy.AddMember("encryption", rapidjson::StringRef(x.Encryption.c_str()), allocator);
                 if (xudp && udp)
                     proxy.AddMember("packet_encoding", rapidjson::StringRef("xudp"), allocator);
                 if (!x.Flow.empty())
