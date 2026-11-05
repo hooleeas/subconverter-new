@@ -20,11 +20,7 @@ Check the service:
 curl http://localhost:25500/version
 ```
 
-Expected output:
-
-```text
-subconverter-new v0.1.0
-```
+It should return the product name and the current version.
 
 Docker Compose:
 

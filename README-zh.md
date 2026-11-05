@@ -22,11 +22,7 @@ docker run -d --name subconverter-new --restart=always \
 curl http://localhost:25500/version
 ```
 
-正常时会返回：
-
-```text
-subconverter-new v0.1.0
-```
+正常时会返回产品名和当前版本号。
 
 也可以使用 Docker Compose：
 
