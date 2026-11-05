@@ -1,4 +1,6 @@
 name: GitHub CI
+permissions:
+  contents: write
 on:
   push:
     branches: [ master ]
